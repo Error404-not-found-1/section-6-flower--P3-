@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivering Smiles with Every Bloom</title>
+  <link rel="stylesheet" href="Delivery.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-light fixed-top" style="z-index: 1050; width: 100%;">
+    <div class="container-fluid">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#sidebarMenu"
+        aria-controls="sidebarMenu"
+        aria-expanded="true"
+        aria-label="Toggle sidebar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="index" href="index.html" style="text-decoration: none;">
+        <span class="navbar-brand ms-3 text-gold fw-bold">Precioso</span>
+      </a>
+  </nav>
+
+  <!-- Sidebar -->
+  <div
+    class="collapse show sidebar-bg"
+    id="sidebarMenu"
+    style="width: 220px; min-height: 100vh; position: fixed; top: 56px; left: 0; padding: 20px; overflow-y: auto;"
+  >
+    <h4 class="text-gold fw-bold mb-4">Menu</h4>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a href="main.html" class="nav-link text-dark">Shop</a></li>
+      <li class="nav-item"><a href="Delivery.html active" class="nav-link">Delivery</a></li>
+      <li class="nav-item"><a href="/main.html#review" class="nav-link">Reviews</a></li>
+      <li class="nav-item"><a href="Discount.html" class="nav-link">Promotions</a></li>
+      <li class="nav-item"><a href="about-us.html" class="nav-link">About us</a></li>
+    </ul>
+  </div>
+
+  <!-- Main content wrapper -->
+  <div id="mainContent">
+    <header class="deliheader">
+    <div class="wrap mt-5">
+      <h1>Delivering Smiles with Every Bloom</h1>
+      <div class="sub">You can choose the right delivery service for your needs?</div>
+      <div class="controls">
+        <label class="search" aria-label="To search">
+          <span>🔎</span>
+          <input id="q" type="search" placeholder="Company, tagline, email, phone …" />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="grid" id="grid" aria-live="polite"></div>
+
+    <section class="ask-contact">
+      <div class="wrap">
+        <h3>Can you ask and contact</h3>
+        <div id="chosen"><span class="empty">No choose</span></div>
+        <p>If you have any questions or want to get in touch, please contact us through the delivery cards above.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="contactModal" class="modal">
+    <div class="modal-content"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer py-4">
+    <div class="end">
+      <div class="mb-3">
+        <a href="#" class="footer-link mx-2">Instagram</a>
+        <a href="#" class="footer-link mx-2">Facebook</a>
+        <a href="#" class="footer-link mx-2">Pinterest</a>
+      </div>
+      <p class="mb-0">© 2025 Precioso Flower Shop</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="Delivery.js"></script>
+
+</body>
+</html>

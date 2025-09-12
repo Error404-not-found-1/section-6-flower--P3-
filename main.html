@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="precioso.jpg" type="image/png" />
+  <title>Precioso</title>
+
+  <link rel="stylesheet" href="review.css" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* ===== Theme ===== */
+    :root {
+      --gold-light: rgb(79, 78, 78);
+      --gold-dark: #fb7b49;
+      --off-white: #F8F8F8;
+      --brown-dark: #fe826c;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--off-white);
+      color: var(--brown-dark);
+      margin: 0;
+    }
+
+    /* ===== Navbar ===== */
+    .navbar {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .navbar-brand {
+      color: #fe826c !important; /* matches sidebar accent */
+      font-weight: 700;
+    }
+    .fill{
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      list-style: none;
+    }
+    a{
+      text-decoration: none;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar-bg {
+      background-color: rgba(251, 196, 156, 0.3);
+      color: var(--brown-dark);
+      border-right: 2px solid rgba(255, 212, 166, 0.5);
+      box-shadow: 2px 0 8px rgba(161, 116, 68, 0.15);
+      backdrop-filter: blur(8px);
+      transition: background-color 0.3s ease;
+      z-index: 1;
+    }
+    .sidebar-bg h4 { color: #fe826c; }
+    .sidebar-bg .nav-link { color: var(--brown-dark); font-weight: 600; }
+    .sidebar-bg .nav-link:hover,
+    .sidebar-bg .nav-link.active {
+      color: var(--gold-dark);
+      background-color: rgba(254, 125, 102, 0.2);
+      border-radius: 4px;
+    }
+
+    /* ===== Main / Footer stick-to-bottom ===== */
+    #mainContent {
+      transition: margin-left 0.3s ease;
+      padding: 80px 0 0 0;              /* clear the fixed navbar */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;                /* so footer can push to bottom */
+    }
+    footer.footer {
+      margin-top: auto;                 /* pushes footer down when content is short */
+      background-color: #ff9e8d;
+      color: var(--off-white);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .footer-link { color: var(--off-white); text-decoration: none; }
+    .footer-link:hover { color: var(--gold-light); text-decoration: underline; }
+
+    /* ===== Header ===== */
+    .header { color: var(--gold-dark); }
+    .shop-title {
+      color: var(--gold-light);
+      font-weight: 900;
+      font-family: 'Georgia', serif;
+      letter-spacing: 2px;
+    }
+    nav .nav-link { color: rgb(116,116,116); font-weight: 600; }
+    nav .nav-link:hover { color: #fe826c; }
+
+    .nav-link{
+      position: relative;
+    }
+
+    /* ===== Hero Carousel ===== */
+    .hero {
+      margin-bottom: 2rem;
+      margin-left: 0.5rem;
+      margin-right: 0.25;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .hero-img {
+      height: 300px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .carousel-caption {
+      background: rgba(0,0,0,0.4);
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+    }
+    .carousel-caption h2 {
+      font-size: 1.5rem;
+      color: #FFF5EB;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+    }
+    .carousel-caption p {
+      font-size: 1rem;
+      color: #ffffff;
+    }
+
+    /* ===== Buttons ===== */
+    .btn-gold {
+      background-color: #ff814f;
+      border: none;
+      color: var(--off-white);
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+    .btn-gold:hover { background-color: #ffa986; color: var(--off-white); }
+
+    /* ===== Categories visibility ===== */
+    .cards-group { display: none; }
+    .cards-group.show { display: block; }
+
+    /* ===== Cards ===== */
+    .flower-card {
+      border: 2px solid #ff814f;
+      border-radius: 10px;
+      max-height: 600px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background-color: var(--off-white);
+    }
+    .flower-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(161, 115, 68, 0.5);
+    }
+    .flower-card .card-title { color: var(--gold-dark); font-weight: 700; }
+    .flower-card .price { color: #ff6021; font-weight: 700; font-size: 1.1rem; }
+
+    .flower-item img{
+      max-width: 320px;
+      height: 350px;
+      border-radius: 8px;
+    }
+
+    /* ===== Cart ===== */
+    #cart-count{
+      position: absolute;
+      top: -5px;
+    }
+
+    /* ===== Pop-up ===== */
+    .flower-popup {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      z-index: 1050;
+    }
+
+    .popup-content {
+      width: 90%;
+      max-width: 500px;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .popup-close-btn {
+      background: #ff814f;
+      color: #fff;
+      padding: 0.4rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #popupDesc {
+      white-space: pre-line;
+      color: black; /* preserves \n as a line break */
+    }
+
+    /* ===== Product image fix (no stretching) ===== */
+    .product-img {
+      width: 100%;
+      height: 220px;          /* consistent height for all */
+      object-fit: contain;    /* keep aspect ratio, no crop */
+      background: #fff;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    @media (max-width: 576px) {
+      .product-img { height: 180px; }
+    }
+
+    /* Avoid conflicts: DO NOT override Bootstrap .container or generic .card img */
+  </style>
+  <link rel="stylesheet" href="review.css" />
+</head>
+
+<body>
+  <div class="d-flex">
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light fixed-top" style="z-index: 1050; width: 100%;">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#sidebarMenu"
+          aria-controls="sidebarMenu"
+          aria-expanded="true"
+          aria-label="Toggle sidebar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="index" href="index.html">
+          <span class="navbar-brand ms-3 text-gold fw-bold">Precioso</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div
+      class="collapse show sidebar-bg"
+      id="sidebarMenu"
+      style="width: 220px; min-height: 100vh; position: fixed; top: 56px; left: 0; padding: 20px; overflow-y: auto;"
+    >
+      <h4 class="text-gold fw-bold mb-4">Menu</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a href="main.html" class="nav-link text-dark">Shop</a></li>
+        <li class="nav-item"><a href="Delivery.html" class="nav-link text-dark">Delivery</a></li>
+        <li class="nav-item"><a href="#review" class="nav-link text-dark">Reviews</a></li>
+        <li class="nav-item"><a href="Discount.html" class="nav-link text-dark">Promotions</a></li>
+        <li class="nav-item"><a href="about-us.html" class="nav-link text-dark">About us</a></li>
+      </ul>
+    </div>
+
+    <!-- Main -->
+    <main id="mainContent" class="main-content flex-grow-1">
+      <!-- Header -->
+      <header class="header text-center py-4">
+        <div class="d-flex justify-content-center align-items-center gap-3">
+          <a class="index" href="index.html">
+            <img src="image/precioso-square.jpg" alt="Precioso Logo" width="60" height="60"/>
+          </a>
+          <h1 class="m-0 shop-title">Precioso</h1>
+        </div>
+
+        <!-- Top Nav -->
+        <nav class="container mt-3">
+          <div class="row align-items-center justify-content-between">
+            <div class="col-md-auto">
+              <ul class="fill">
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#specials">Special Offers</a></li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#cart">🛒 <span id="cart-count" class="badge bg-danger">0</span></a>
+                </li>
+                <li class="nav-item">
+                  <button id="clear-cart" class="btn btn-sm btn-outline-danger ms-2">Clear Cart</button>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-auto">
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search flowers..." aria-label="Search" />
+                <button class="btn btn-gold" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Hero Carousel -->
+      <section id="home" class="hero">
+        <div id="heroCarousel" class="carousel slide carousel-fad ml-2" data-bs-ride="carousel" data-bs-interval="4000">
+          <div class="carousel-inner">
+
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+              <img src="https://png.pngtree.com/thumb_back/fw800/background/20240929/pngtree-a-box-with-tulips-and-bow-ribbon-tied-around-it-stunning-image_16241209.jpg" class="d-block w-100 hero-img" alt="Beautiful Moments">
+              <div class="carousel-caption d-none d-md-block">
+                <h2 class="fw-bold">Fresh Flowers, Beautiful Moments</h2>
+                <p>Brighten every day with handpicked bouquets.</p>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+              <img src="https://img.freepik.com/premium-photo/happy-mothers-day-mom-child-greeting-woman-child-love-card-background-with-beautiful-flower_1106474-3938.jpg" class="d-block w-100 hero-img" alt="Blooms Heart">
+              <div class="carousel-caption d-none d-md-block">
+                <h2 class="fw-bold">Blooms That Speak From the Heart</h2>
+                <p>Say “I love you” with flowers that last in memory.</p>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+              <img src="https://img.freepik.com/premium-photo/close-up-small-pink-flowers-bouquet-glass-vase-with-blurred-grey-background-wedding-birthday-valentines-day-concept_308547-1089.jpg" class="d-block w-100 hero-img" alt="Flower Basket">
+              <div class="carousel-caption d-none d-md-block">
+                <h2 class="fw-bold">Celebrate Every Occasion</h2>
+                <p>From birthdays to weddings, flowers make it special.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Indicators (dots) -->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+          </div>
+
+          <!-- Controls (arrows) -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section id="categories" class="py-5">
+        <div class="container text-center">
+          <!-- Buttons -->
+          <div class="btn-group mb-4" role="group" aria-label="Category buttons">
+            <button class="btn btn-gold category-btn active" data-target="all">All</button>
+            <button class="btn btn-gold category-btn" data-target="romance-cards">Romance</button>
+            <button class="btn btn-gold category-btn" data-target="friends-cards">Friends</button>
+            <button class="btn btn-gold category-btn" data-target="birthday-cards">Birthday</button>
+            <button class="btn btn-gold category-btn" data-target="special-cards">Special Occasions</button>
+            <button class="btn btn-gold category-btn" data-target="decoration-cards">Decorations</button>
+            <button class="btn btn-gold category-btn" data-target="accessories-cards">Accessories</button>
+          </div>
+
+          <!-- Cards Container -->
+          <div id="cards-container">
+            <!-- Romance -->
+            <div class="cards-group show" id="romance-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blush of Love"
+                    data-desc="Blush of Love embodies the soft, tender hues of affection and intimacy. It symbolizes warmth, gentle romance, and the quiet beauty of heartfelt emotions, capturing the delicate charm of a bloom kissed by love's subtle touch.">
+                    <img src="image/Blush of love.jpg" alt="Blush of Love">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blush of Love</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$64.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blush of Love">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Hearts in Bloom"
+                    data-desc="Hearts in Bloom celebrates the vibrant joy and affectionate energy of blossoming love. It symbolizes passion, warmth, and the cheerful connection between hearts, capturing the lively spirit and tender beauty of flowers that bloom with emotion.">
+                    <img src="image/Hearts in Bloom.jpg" alt="Hearts in Bloom">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Hearts in Bloom</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$80.30</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Hearts in Bloom">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Eternal Romance"
+                    data-desc="Eternal Romance embodies timeless love and enduring elegance. With graceful petals that seem to whisper devotion, it symbolizes lasting affection, deep connection, and the beauty of a bond that blossoms through every season.">
+                    <img src="image/Eternal Romance.jpg" alt="Eternal Romance">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Eternal Romance</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$82.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Eternal Romance">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Romance Serenade"
+                    data-desc="Romance Serenade captures the gentle melody of love expressed through delicate blooms. It symbolizes tender affection, poetic charm, and the harmonious beauty of hearts in sync, evoking the soft elegance of a floral love song.">
+                    <img src="image/Romance Serenade.jpg" alt="Romance Serenade">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Romance Serenade</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$75.60</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Romance Serenade">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Love Therapy"
+                    data-desc="Love Therapy embodies the soothing and uplifting power of flowers to heal and comfort. It symbolizes care, emotional renewal, and the gentle reassurance of affection, offering a serene and nurturing floral embrace.">
+                    <img src="image/Love Therapy.jpg" alt="Love Therapy">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Love Therapy</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$65.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Love Therapy">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Passion's Whisper"
+                    data-desc="Experience a symphony of textures with this rich and luxurious bouquet. It combines the classic romance of roses, the intricate ruffles of ranunculus, the sleek elegance of tulips, and the abundant fullness of hydrangeas. This magnificent arrangement is a true showstopper, blending diverse blooms into a cohesive and breathtaking gift for a truly special occasion">
+                    <img src="image/Passion's Whisper.jpg" alt="Passion's Whisper">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Passion's Whisper</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$71.20</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Passion's Whisper">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Dawn's Embrace"
+                    data-desc="This stunning bouquet is a celebration of timeless romance, perfectly blending the classic elegance of roses with the delicate charm of ranunculus. Each bloom complements the other, creating a rich texture and a captivating display of layered petals. It's the perfect gift to express heartfelt love and affection in the most beautiful way.">
+                    <img src="image/Dawn's embrace.jpg" alt="Dawn's Embrace">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Dawn's Embrace</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$55.80</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Dawn's Embrace">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Pure Elegance"
+                    data-desc="This charming bouquet is a timeless expression of affection and pure love. The classic combination of vibrant carnations and delicate baby's breath creates a beautiful and long-lasting arrangement. It's a perfect choice for celebrating friendships, showing appreciation, or simply brightening someone's day with its understated elegance.">
+                    <img src="image/Pure Elegance.png" alt="Pure Elegance">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Pure Elegance</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$60.00</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Pure Elegance">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Breath of Love"
+                    data-desc="Radiate joy and gratitude with this lovely bouquet of pink carnations. These beautiful blooms symbolize a mother's eternal love and appreciation, making them a profoundly meaningful gift. The soft, ruffled petals create a full and graceful display that conveys warmth and heartfelt emotion.">
+                    <img src="image/Breath of love.jpg" alt="Breath of Love">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Breath of Love</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$54.30</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Breath of Love">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Rosy Lilacs Glow"
+                    data-desc="This exquisite bouquet combines the timeless elegance of roses with the enchanting fragrance of lilacs. A true celebration of love and new beginnings, this arrangement creates a romantic and dreamy atmosphere. It's the perfect gift for someone who appreciates both classic beauty and a touch of unique charm.">
+                    <img src="image/Rosy lilacs glow.jpg" alt="Rosy Lilacs Glow">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Rosy Lilacs Glow</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$76.00</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Rosy Lilacs Glow">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Purple Haze"
+                    data-desc="Embrace the magic of spring with our lovely purple lilac bouquet. These fragrant, clustered blooms symbolize first love and a sense of wonder, filling any room with a sweet and nostalgic scent. It's an ideal choice for conveying deep affection and admiration with its captivating beauty.">
+                    <img src="image/Purple Haze.jpg" alt="Purple Haze">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Purple Haze</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$51.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Purple Haze">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Lilacs Dreams"
+                    data-desc="This luxurious bouquet is a stunning display of soft, lush textures and romantic charm. It beautifully pairs the abundant, fragrant clusters of lilacs with the magnificent, full-petaled heads of peonies. This unique combination creates a breathtaking and sophisticated gift that celebrates beauty, prosperity, and cherished moments.">
+                    <img src="image/Lilacs Dreams.jpg" alt="Lilacs Dreams">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Lilacs Dreams</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$66.40</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Lilacs Dreams">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Loyal Bloom"
+                    data-desc="This soft and serene bouquet offers a delicate balance of color and form. The subtle charm of pale lobelia adds a whimsical trailing element that beautifully complements the classic romance of pink blooms. It's a sweet and graceful arrangement perfect for conveying admiration and gentle affection.">
+                    <img src="image/Loyal Bloom.jpg" alt="Loyal Bloom">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Loyal Bloom</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$53.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Loyal Bloom">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Lobelia Luster"
+                    data-desc="A captivating blend of classic elegance and natural grace, this bouquet pairs the timeless beauty of a white rose with the intricate clusters of lobelia. The crisp white and delicate trailing lobelia create a romantic, ethereal feel. It’s an ideal choice for a gift that feels both pure and charmingly rustic.">
+                    <img src="image/Lobelia luster.jpg" alt="Lobelia Luster">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Lobelia Luster</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$69.90</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Lobelia Luster">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Lily Love Affair"
+                    data-desc="This stunning bouquet of white lilies is a symbol of purity, devotion, and new beginnings. Their magnificent, trumpet-shaped blooms fill any space with a sweet, luxurious fragrance and an air of quiet sophistication. It's a perfect choice for celebrating milestones or expressing a deep, sincere sense of respect and honor.">
+                    <img src="image/Lily love affair.jpg" alt="Lily Love Affair">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Lily Love Affair</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$51.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Lily Love Affair">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Lily Elegance"
+                    data-desc="Celebrate love and prosperity with this beautiful bouquet of pink lilies. These elegant and graceful blooms are a wonderful way to convey affection and admiration. The soft, captivating color and sweet scent create an atmosphere of warmth and happiness, making it an ideal gift for any special person in your life.">
+                    <img src="image/Lily Elegance.jpg" alt="Lily Elegance">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Lily Elegance</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$59.60</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Lily Elegance">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Majestic Petals"
+                    data-desc="This elegant bouquet is a beautiful expression of pure love and timeless grace. It perfectly combines the classic romance of white roses with the majestic beauty of lilies. The striking contrast of textures and forms creates a sophisticated and memorable arrangement that speaks volumes without a single word.">
+                    <img src="image/Majestic petals.jpg" alt="Majestic Petals">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Majestic Petals</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$73.40</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Majestic Petals">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Fiery Grace"
+                    data-desc="This classic bouquet beautifully marries the timeless romance of roses with the striking elegance of gladiolus. The mix of delicate petals and strong, statuesque stems creates a dynamic and sophisticated arrangement. It's a perfect way to show love and admiration while making a powerful and memorable statement.">
+                    <img src="image/Fiery Grace.jpg" alt="Fiery Grace">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Fiery Grace</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$54.60</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Fiery Grace">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sunlit Symphony"
+                    data-desc="This stunning bouquet balances vibrant energy with gentle romance. The cheerful boldness of marigolds is softened by the graceful and sweet elegance of pink roses. This unique pairing creates a dynamic and sophisticated arrangement that is both eye-catching and deeply meaningful, making it perfect for a heartfelt gesture.">
+                    <img src="image/Sunlit symphony.jpg" alt="Sunlit Symphony">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sunlit Symphony</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$58.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sunlit Symphony">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Luxe Blooms"
+                    data-desc="This elegant bouquet is a beautiful expression of both admiration and deep love. It perfectly pairs the delicate, exotic beauty of orchids with the timeless romance of roses. The stunning combination creates a sophisticated and balanced arrangement, ideal for making a grand and heartfelt statement.">
+                    <img src="image/Luxe Blooms.jpg" alt="Luxe Blooms">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Luxe Blooms</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$67.90</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Luxe Blooms">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Peony Perfection"
+                    data-desc="A breathtaking blend of classic romance and abundant beauty, this bouquet pairs the lush, layered petals of peonies with the timeless elegance of roses. The combination creates a rich and deeply romantic display that is both visually striking and fragrant. It's a perfect gift for expressing a grand, heartfelt passion.">
+                    <img src="image/Peony perfection.jpg" alt="Peony Perfection">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Peony Perfection</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$57.60</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Peony Perfection">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Pastel Serenity"
+                    data-desc="This lovely bouquet of pink chrysanthemums is a wonderful way to express gentle love and affectionate admiration. Their soft, delicate petals and cheerful color create a charming and graceful arrangement. It's an ideal gift to show your appreciation and make someone feel truly special.">
+                    <img src="image/Pastel serenity.jpg" alt="Pastel Serenity">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Pastel serenity</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$58.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Pastel serenity">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Pink Velvet"
+                    data-desc="This classic bouquet of roses is the ultimate declaration of love and passion. Each velvety bloom symbolizes deep affection and timeless romance, filling the air with a captivating fragrance. It's the perfect gift to express heartfelt emotions and make any moment truly unforgettable.">
+                    <img src="image/Pink Velvet.jpg" alt="Pink Velvet">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Pink Velvet</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$55.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Pink Velvet">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Cheerful Posy"
+                    data-desc="This sweet bouquet of daisies offers a timeless and understated elegance. Symbolizing loyal love and purity, these flowers are a beautiful way to show someone you care without any frills. This simple and honest arrangement is perfect for any occasion that calls for a gentle touch.">
+                    <img src="image/Cheerful posy.jpg" alt="Cheerful Posy">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Cheerful Posy</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for love occasions.</p>
+                      <p class="price mb-2">$53.20</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Cheerful Posy">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Friends -->
+            <div class="cards-group show mt-4" id="friends-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Serenity's bloom"
+                    data-desc="Experience the serene beauty of our hydrangea bouquet, a graceful blend of soft blue and deep purple blooms. These lush, cloud-like blossoms symbolize heartfelt emotions and gratitude, making them a profoundly meaningful gift. Expertly arranged to create a full and breathtaking display, this bouquet will infuse any space with a tranquil and sophisticated elegance">
+                    <img src="image/Serenity's bloom.jpg" alt="Serenity's bloom">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Serenity's bloom</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$59.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Serenity's bloom">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blush Harmony"
+                    data-desc="This romantic bouquet is a beautiful expression of love and happiness, blending the timeless elegance of pink roses with the lush abundance of pink hydrangeas. The soft, harmonious colors create a feeling of pure affection and grace, making it an ideal gift to celebrate love, friendship, or a special anniversary.">
+                    <img src="image/Blush Harmony.jpg" alt="Blush Harmony">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blush Harmony</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$80.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blush Harmony">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Pastel Dream"
+                    data-desc="Bring a touch of sophisticated elegance into any room with this stunning peony and hydrangea bouquet. The soft, rounded shapes of the hydrangeas provide a perfect backdrop for the magnificent, layered blooms of the peonies. This arrangement is a testament to timeless beauty and grace, perfect for making a grand and memorable gesture.">
+                    <img src="image/Pastel Dream.jpg" alt="Pastel Dream">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Pastel Dream</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$74.30</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Pastel Dream">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Delicate delight"
+                    data-desc="This exquisite ranunculus bouquet is a celebration of delicate charm and radiant beauty. Each bloom unfolds with countless layers of paper-thin petals, creating a mesmerizing and intricate display. A gift of pure ranunculus is the perfect way to convey that you find someone truly captivating and attractive.">
+                    <img src="image/Delicate delight.jpg" alt="Delicate delight">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Delicate delight</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$72.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Delicate delight">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sun-kissed Stems"
+                    data-desc="A perfect blend of cheer and purity, this bouquet pairs the radiant happiness of sunflowers with the serene elegance of white roses. The classic contrast creates a stunning visual that is both uplifting and deeply meaningful. It's an ideal choice for a gift that symbolizes sincere adoration and happiness.">
+                    <img src="image/Sun-kissed Stems.jpg" alt="Sun-kissed Stems">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sun-kissed Stems</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$60.30</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sun-kissed Stems">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sunshine Blooms"
+                    data-desc="Radiate pure joy with this classic sunflower bouquet. Each bloom is a miniature sun, symbolizing adoration, longevity, and a bright outlook. The bold, happy flowers are sure to bring a smile to anyone's face and instantly brighten their day.">
+                    <img src="image/Sunshine Blooms.jpg" alt="Sunshine Blooms">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sunshine Blooms</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$62.80</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sunshine Blooms">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Simple Joy"
+                    data-desc="This charming bouquet of daisies is a pure and simple expression of innocence and joy. Their bright, open faces and delicate petals create a cheerful and uplifting arrangement. It's the perfect choice for a spontaneous gesture or to send a message of new beginnings and true friendship.">
+                    <img src="image/Simple Joy.jpg" alt="Simple Joy">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Simple Joy</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$51.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Simple Joy">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Pure Petals"
+                    data-desc="Embrace the whimsical beauty of a country garden with this lovely daisy bouquet. The classic combination of white petals and yellow centers creates a rustic and heartfelt look. It's an ideal arrangement for someone who appreciates natural, simple beauty and is guaranteed to bring a smile to their face.">
+                    <img src="image/Pure petals.jpg" alt="Pure Petals">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Pure Petals</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$50.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Pure Petals">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Freesia Delight"
+                    data-desc="This delightful bouquet of freesia is an exquisite choice for its sweet, captivating fragrance that fills any room. Each stem holds multiple bell-shaped blooms, creating a delicate yet abundant display of color. It's the perfect way to convey thoughtfulness, trust, and friendship through both sight and scent.">
+                    <img src="image/Freesia delight.jpg" alt="Freesia Delight">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Freesia Delight</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$66.80</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Freesia Delight">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Scented Serenity"
+                    data-desc="This charming freesia bouquet is a wonderful celebration of pure joy and cheer. The vibrant array of colors and the delicate blooms bring an instant feeling of happiness and light. It's the perfect, long-lasting gift to brighten someone's day or to commemorate a special friendship.">
+                    <img src="image/Scented Serenity.jpg" alt="Scented Serenity">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Scented Serenity</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for friend occasions.</p>
+                      <p class="price mb-2">$65.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Scented Serenity">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Birthday -->
+            <div class="cards-group show mt-4" id="birthday-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sunlit Grace"
+                    data-desc="A delicate floral arrangement symbolizing warmth, elegance, and gentle charm.
+
+                    This bouquet features soft pink gerbera daisies and carnations, beautifully accented with sprigs of baby's breath, eucalyptus, and filler greenery. Wrapped in crisp white paper and tied with a satin pink ribbon, Sunlit Grace radiates serenity and affection. The pastel tones evoke tenderness and optimism, making it a perfect gift for expressing gratitude, admiration, or heartfelt love.">
+                    <img src="image/Sunlit grace.jpg" alt="Sunlit Grace">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sunlit Grace</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for birthday occasions.</p>
+                      <p class="price mb-2">$59.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sunlit Grace">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Springtime Elegance"
+                    data-desc="Springtime Elegance refers to the grace and freshness embodied by blooming flowers as winter fades. It highlights the delicate colors, soft textures, and uplifting vitality that symbolize renewal, beauty, and the gentle charm of early spring. Flowers in this theme evoke feelings of warmth, hope, and the quiet sophistication of nature's rebirth.">
+                    <img src="image/Springtime elegance.jpg" alt="Springtime Elegance">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Springtime Elegance</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for birthday occasions.</p>
+                      <p class="price mb-2">$60.00</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Springtime Elegance">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blooming Quartet"
+                    data-desc="Blooming Quartet captures the harmony of four blossoms flourishing together, each petal adding its voice to a single, vibrant chorus of color. This theme symbolizes unity, balance, and the joyful abundance of nature, reflecting how distinct beauties can thrive side by side to create a richer, fuller expression of life.">
+                    <img src="image/Blooming quartet.jpg" alt="Blooming Quartet">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blooming Quartet</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for birthday occasions.</p>
+                      <p class="price mb-2">$61.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blooming Quartet">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blush & Snow"
+                    data-desc="This stunning bouquet of white chrysanthemums is a beautiful symbol of truth, loyalty, and honest love. Their abundant, layered petals create a full and graceful arrangement that exudes peaceful elegance. It's a perfect choice for sending a message of sincere well-wishes or as a thoughtful tribute.">
+                    <img src="image/Blush & Snow.jpg" alt="Blush & Snow">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blush & Snow</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for birthday occasions.</p>
+                      <p class="price mb-2">$57.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blush & Snow">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special Occasions -->
+            <div class="cards-group show mt-4" id="special-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Carnbera Charm"
+                    data-desc="Carnbera Charm evokes the quiet allure of soft petals touched with subtle radiance. It represents timeless grace, gentle warmth, and the way a single blossom can captivate the senses. This theme celebrates delicate beauty with a hint of sophistication, inviting calm and admiration much like a serene spring morning.">
+                    <img src="image/carnbera charm.jpg" alt="Carnbera Charm">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Carnbera Charm</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for wedding.</p>
+                      <p class="price mb-2">$52.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Carnbera Charm">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Freye Gerbera & Rose Bouquet"
+                    data-desc="Freye Gerbera & Rose Bouquet blends the cheerful vitality of gerberas with the timeless romance of roses, creating a harmony of color and feeling. It symbolizes affection, celebration, and the joy of giving, capturing both the spirited freshness of spring and the enduring elegance of classic blooms.">
+                    <img src="image/Freye Gerbera.jpg" alt="Freye Gerbera & Rose Bouquet">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Freye Gerbera & Rose Bouquet</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for graduation.</p>
+                      <p class="price mb-2">$55.30</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Freye Gerbera & Rose Bouquet">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sunlit Daisies"
+                    data-desc="Embrace the cheerful charm of our daisy bouquet, a radiant blend of bright white petals and golden centers. These joyful blossoms symbolize purity, innocence, and new beginnings, making them a thoughtful and uplifting gift. Carefully gathered to create a fresh and vibrant display, this bouquet will brighten any room with its natural beauty and effortless grace.">
+                    <img src="image/Sunlit Daisies.jpg" alt="Sunlit Daisies">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sunlit Daisies</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for single.</p>
+                      <p class="price mb-2">$51.60</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sunlit Daisies">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Whispering Beauty"
+                    data-desc="This vibrant bouquet is a celebration of happiness and passion. It combines the classic romance of roses, the cheerful energy of gerbera daisies, and the timeless beauty of carnations. The striking mix of colors and textures creates an unforgettable arrangement that is perfect for spreading joy and making a memorable statement.">
+                    <img src="image/Whispering beauty.jpg" alt="Whispering Beauty">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Whispering Beauty</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for anniversary.</p>
+                      <p class="price mb-2">$57.40</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Whispering Beauty">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Butterfly's Delight"
+                    data-desc="This vibrant bouquet is a celebration of texture and color, with lobelia's delicate blooms weaving through a variety of larger flowers. It creates a lush, natural look, as if gathered from a summer garden. This bouquet is a wonderful choice for bringing a feeling of effortless beauty and charm to any space.">
+                    <img src="image/Butterfly's Delight.jpg" alt="Butterfly's Delight">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Butterfly's Delight</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for gift.</p>
+                      <p class="price mb-2">$68.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Butterfly's Delight">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Sincere Splendor"
+                    data-desc="This beautiful bouquet of white gladiolus is a stunning symbol of strength, honor, and integrity. The tall, graceful stalks rise with elegant poise, creating a magnificent vertical display. It's a truly meaningful gift to celebrate a hero, a graduation, or to send a powerful message of admiration.">
+                    <img src="image/Sincere splendor.jpg" alt="Sincere Splendor">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sincere Splendor</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for honor.</p>
+                      <p class="price mb-2">$52.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Sincere Splendor">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Radiant Strength"
+                    data-desc="Celebrate passion and joy with this vibrant bouquet. It combines the warm, cheerful energy of yellow roses and gladiolus with the striking pop of red gladiolus. This bold and lively arrangement is a fantastic choice for sending congratulations or adding a dramatic burst of color to any occasion.">
+                    <img src="image/Radiant Strength.jpg" alt="Radiant Strength">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Radiant Strength</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for congratulation.</p>
+                      <p class="price mb-2">$57.80</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Radiant Strength">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Golden Radiance"
+                    data-desc="This cheerful and vibrant bouquet is a ray of sunshine, bringing together the bold charm of marigolds, the playful optimism of pink gerbera daisies, and the bright joy of yellow roses. This mix of brilliant colors and textures creates a lively and unforgettable arrangement. It's the perfect way to celebrate a happy occasion or send a burst of positive energy.">
+                    <img src="image/Golden Radiance.jpg" alt="Golden Radiance">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Golden Radiance</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for cheer.</p>
+                      <p class="price mb-2">$58.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Golden Radiance">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Amber Delight"
+                    data-desc="Embrace a rustic and whimsical feel with this delightful marigold and daisy bouquet. The combination of marigolds' rich, fiery hues and the simple, innocent beauty of daisies creates a charming and natural-looking arrangement. It's an ideal gift to express appreciation or to brighten a space with a touch of countryside charm.">
+                    <img src="image/Amber delight.jpg" alt="Amber Delight">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Amber Delight</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for appreciation.</p>
+                      <p class="price mb-2">$61.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Amber Delight">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Petal Duo"
+                    data-desc="This breathtaking bouquet combines the sophisticated elegance of white orchids with the majestic purity of lilies. The striking contrast of their shapes and the shared white palette create a luxurious and serene arrangement. It's an ideal choice for celebrating new beginnings, conveying respect, or adding a touch of peaceful beauty to any setting.">
+                    <img src="image/Petal Duo.jpg" alt="Petal Duo">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Petal Duo</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for celebrating.</p>
+                      <p class="price mb-2">$54.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Petal Duo">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Velvet Orchid"
+                    data-desc="Celebrate beauty and royalty with this enchanting bouquet of purple orchids. These magnificent blooms symbolize admiration, respect, and dignity, making them a truly special and memorable gift. The rich color and graceful form of each orchid create a sophisticated and mesmerizing display.">
+                    <img src="image/Velvet Orchid.jpg" alt="Velvet Orchid">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Velvet Orchid</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for respect.</p>
+                      <p class="price mb-2">$53.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Velvet Orchid">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blushing Peony"
+                    data-desc="This luxurious bouquet of pink peonies is a true symbol of good fortune, prosperity, and romance. Their magnificent, full-bodied blooms create a soft and lush arrangement with a delightful, sweet fragrance. It's an absolutely stunning choice for celebrating a special occasion or simply showing someone you care with a touch of elegance.">
+                    <img src="image/Blushing Peony.jpg" alt="Blushing Peony">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blushing Peony</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for celebrating.</p>
+                      <p class="price mb-2">$55.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blushing Peony">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Lush Peony Charm"
+                    data-desc="This beautiful bouquet of pure white peonies symbolizes bashfulness, innocence, and happiness. The pristine, cloud-like blooms are incredibly romantic and create a feeling of soft, dreamlike elegance. It’s an ideal choice for a wedding or any moment where you wish to convey purity and sincere devotion.">
+                    <img src="image/Lush peony charm.jpg" alt="Lush Peony Charm">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Lush Peony Charm</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for wedding.</p>
+                      <p class="price mb-2">$52.70</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Lush Peony Charm">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Fields of Gold"
+                    data-desc="This vibrant bouquet is a beautiful symbol of lasting happiness, new beginnings, and heartfelt gratitude. The cheerful boldness of sunflowers pairs perfectly with the warm, passionate hue of orange roses, while the lush hydrangeas add a touch of grace and abundance. It's a fantastic arrangement for celebrating success and sending a burst of joyful energy.">
+                    <img src="image/Fields of gold.jpg" alt="Fields of Gold">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Fields of Gold</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for celebrating.</p>
+                      <p class="price mb-2">$57.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Fields of Gold">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Rose Glow"
+                    data-desc="For a touch of elegant sophistication, choose this magnificent rose bouquet. The perfectly formed buds and graceful stems create a luxurious and refined statement. This bouquet is a beautiful way to show respect, admiration, and grace.">
+                    <img src="image/Rose Glow.jpg" alt="Rose Glow">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Rose Glow</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for respect.</p>
+                      <p class="price mb-2">$59.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Rose Glow">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Blushing Rose"
+                    data-desc="Embrace the iconic beauty of the rose with this simple yet powerful bouquet. A symbol of enduring charm and unadulterated beauty, these flowers are a timeless expression of affection. Whether for a special celebration or 'just because,' this bouquet is a classic gift that will always be cherished.">
+                    <img src="image/Blushing rose.jpg" alt="Blushing Rose">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Blushing Rose</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for celebrating.</p>
+                      <p class="price mb-2">$64.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Blushing Rose">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100 flower-item"
+                    data-title="Spring Whisper"
+                    data-desc="Known for their elegant, graceful shape, our freesia bouquet adds a touch of sophistication to any setting. The slender stems and beautiful blossoms create a sense of effortless charm and refinement. This arrangement is an ideal gift for a graceful gesture or a refined expression of admiration.">
+                    <img src="image/Spring whisper.jpg" alt="Spring Whisper">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Spring Whisper</h5>
+                      <p class="card-text flex-grow-1">Lovely flowers for admiration.</p>
+                      <p class="price mb-2">$63.50</p>
+                      <button class="btn btn-gold add-to-cart mt-2" data-name="Spring Whisper">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Decorations -->
+            <div class="cards-group show mt-4" id="decoration-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/bouquet wrap.jpeg" class="product-img" alt="Bouquet Wrap">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Bouquet Wrap</h5>
+                      <p class="price mb-2">$12.40</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Bouquet Wrap">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/decorative ribbon.avif" class="product-img" alt="Decorative Ribbon">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Decorative Ribbon</h5>
+                      <p class="price mb-2">$10.00</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Decorative Ribbon">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/double-faced satin.jpg" class="product-img" alt="Double-faced Satin">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Double-faced Satin</h5>
+                      <p class="price mb-2">$5.99</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Double-faced Satin">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/flora satin.jpg" class="product-img" alt="Floral Satin">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Satin</h5>
+                      <p class="price mb-2">$6.95</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Satin">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/floral wraps.webp" class="product-img" alt="Floral Wraps">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Wraps</h5>
+                      <p class="price mb-2">$6.55</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Wraps">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/picks and fillers.webp" class="product-img" alt="Decorative Item">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Decorative Item</h5>
+                      <p class="price mb-2">$2.77</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Decorative Item">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/satin ribbon.webp" class="product-img" alt="Satin Ribbon">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Satin Ribbon</h5>
+                      <p class="price mb-2">$6.50</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Satin Ribbon">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/sheer.jpg" class="product-img" alt="Sheer">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Sheer</h5>
+                      <p class="price mb-2">$4.99</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Sheer">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accessories / Supplies -->
+            <div class="cards-group show mt-4" id="accessories-cards">
+              <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/bouquet bags.jpg" class="product-img" alt="Bouquet Bag">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Bouquet Bag</h5>
+                      <p class="price mb-2">$5.00</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Bouquet Bag">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/floral shears.webp" class="product-img" alt="Floral Shear">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Shear</h5>
+                      <p class="price mb-2">$12.00</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Shear">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/floral spray.jpg" class="product-img" alt="Floral Spray">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Spray</h5>
+                      <p class="price mb-2">$8.50</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Spray">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/floral tape.webp" class="product-img" alt="Floral Tape">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Tape</h5>
+                      <p class="price mb-2">$3.00</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Tape">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/floral wire.jpg" class="product-img" alt="Floral Wire">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Floral Wire</h5>
+                      <p class="price mb-2">$4.50</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Floral Wire">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                  <div class="card flower-card h-100">
+                    <img src="/image/water tubes.webp" class="product-img" alt="Water Tubes">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">Water Tubes</h5>
+                      <p class="price mb-2">$2.00</p>
+                      <button class="btn btn-gold add-to-cart mt-auto" data-name="Water Tubes">Add to Cart</button>
+                    </div>
+                  </div>
+                </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Flower Detail Popup -->
+        <div id="flowerPopup" class="flower-popup" style="display: none;">
+          <div class="popup-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="popupTitle"></h3>
+            <p id="popupDesc"></p>
+            <button id="popupClose" class="popup-close-btn">Back</button>
+          </div>
+        </div>
+
+
+      <!-- Specials -->
+      <section id="specials" class="specials py-5">
+        <div class="container text-center">
+          <h2 class="mb-4 section-title">Special Offers</h2>
+          <div class="row">
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card flower-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">Mother's Day Special</h5>
+                  <p class="card-text">20% off on all bouquets for the perfect gift.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card flower-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">Free Delivery</h5>
+                  <p class="card-text">Enjoy free delivery for orders over $50.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card flower-card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">Weekly Subscription</h5>
+                  <p class="card-text">Fresh flowers delivered to your door every week.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr>
+
+      <!-- Review -->
+       <main class="reviewpage" id="review">
+        <h5 class="reviewheading">Our Customers' Reviews</h5>
+        <section class="review-card" aria-live="polite">
+          <button class="nav-btn prev" aria-label="Previous review" title="Previous">
+            &#10094;
+          </button>
+
+          <div class="reviewavatar" id="avatar" aria-hidden="true"></div>
+
+          <div class="content">
+            <div class="top-row">
+              <h2 class="name" id="name">—</h2>
+            </div>
+            <div class="stars" id="stars" aria-label="rating"></div>
+
+            <p class="text" id="text">—</p>
+          </div>
+
+          <button class="nav-btn next" aria-label="Next review" title="Next">
+            &#10095;
+          </button>
+        </section>
+      </main>
+
+      <script src="review.js"></script>
+
+      <!-- Footer -->
+      <footer class="footer py-4">
+        <div class="container text-center">
+          <div class="mb-3">
+            <a href="#" class="footer-link mx-2">Instagram</a>
+            <a href="#" class="footer-link mx-2">Facebook</a>
+            <a href="#" class="footer-link mx-2">Pinterest</a>
+          </div>
+          <p class="mb-0">© 2025 Precioso Flower Shop</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+  <!-- Sidebar & Categories & Cart -->
+  <script>
+    // Sidebar margins
+    const sidebar = document.getElementById('sidebarMenu');
+    const mainContent = document.getElementById('mainContent');
+    const SIDEBAR_WIDTH = 220;
+
+    sidebar.addEventListener('shown.bs.collapse', () => {
+      mainContent.style.marginLeft = SIDEBAR_WIDTH + 'px';
+    });
+    sidebar.addEventListener('hidden.bs.collapse', () => {
+      mainContent.style.marginLeft = '0';
+    });
+    if (sidebar.classList.contains('show')) {
+      mainContent.style.marginLeft = SIDEBAR_WIDTH + 'px';
+    } else {
+      mainContent.style.marginLeft = '0';
+    }
+
+    // Category filter (shows All by default)
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.category-btn');
+      const groups = document.querySelectorAll('.cards-group');
+      function showGroup(target) {
+        groups.forEach(g => g.classList.remove('show'));
+        if (target === 'all') {
+          groups.forEach(g => g.classList.add('show'));
+        } else {
+          const selected = document.getElementById(target);
+          if (selected) selected.classList.add('show');
+        }
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          showGroup(btn.dataset.target);
+        });
+      });
+
+      showGroup('all'); // initial
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const popup = document.getElementById("flowerPopup");
+      const popupTitle = document.getElementById("popupTitle");
+      const popupDesc = document.getElementById("popupDesc");
+      const popupClose = document.getElementById("popupClose");
+      const closeX = document.querySelector(".close-btn");
+
+      // Open when clicking any flower
+      document.querySelectorAll(".flower-item").forEach(card => {
+        card.addEventListener("click", () => {
+          popupTitle.textContent = card.dataset.title;
+          popupDesc.textContent = card.dataset.desc;
+          popup.style.display = "flex";
+        });
+      });
+
+      // Close
+      [popupClose, closeX].forEach(el =>
+        el.addEventListener("click", () => popup.style.display = "none")
+      );
+
+      // Also close if user clicks outside
+      popup.addEventListener("click", e => {
+        if (e.target === popup) popup.style.display = "none";
+      });
+    });
+
+    popupDesc.textContent = card.dataset.desc || "";
+
+  </script>
+  <script src="cart.js"></script>
+</body>
+</html>
