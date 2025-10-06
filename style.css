@@ -13,6 +13,7 @@
 }
 
 .logo-img {
+  border-radius: 20px;
   max-width: 70px;    
   height: auto;        
   display: block;
